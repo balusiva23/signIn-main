@@ -50,14 +50,14 @@ export default userSlice.reducer
 
 export const handleLogin = (token) => async (dispatch) => {
     try {
-        console.log(token);
+        //console.log(token);
       const response = await axios.get("/user/data", {
         headers: {
           Authorization: token
         }
       });
       const storedData = JSON.stringify(response.data);
-      console.log(storedData);
+      //console.log(storedData);
       localStorage.setItem("users", storedData);
       dispatch(setUser(response.data));
     } catch (error) {

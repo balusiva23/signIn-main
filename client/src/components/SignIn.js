@@ -26,14 +26,14 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     dispatch(handleLogin(token)).then(() => {
-  //       navigate("/dashboard"); // Redirect to dashboard if token exists
-  //     });
-  //   }
-  // }, [dispatch, navigate]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(handleLogin(token)).then(() => {
+        navigate("/dashboard"); // Redirect to dashboard if token exists
+      });
+    }
+  }, [dispatch, navigate]);
 
   const login = async (e) => {
     e.preventDefault();
@@ -47,16 +47,25 @@ export default function SignIn() {
         email,
         password,
       });
-      console.log(response.data.token);
-      //localStorage.setItem("token", response.data.token);
-      await handleLogin(response.data.token); // Fetch user data and set in Redux store
-    //  navigate("/dashboard"); // Redirect to dashboard after successful login
+      console.log(response.data);
+      if(response.data.success){
+        //console.log("Success"+response.data.success);
+        localStorage.setItem("token", response.data.token);
+        await handleLogin(response.data.token); // Fetch user data and set in Redux store
+        navigate("/dashboard"); // Redirect to dashboard after successful login
+      }else{
+        console.log("Failed"+response.data.success);
+        alert("Please check email and password")
+      }
+      
+      
+    
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid email or password. Please try again.");
     }
   };
-
+   console.log(axios);
   // const login = async (e) => {
   //   e.preventDefault();
   //   console.log(email);
